@@ -8,7 +8,7 @@ import (
 )
 
 type Post_Repo interface {
-	GetAll([]models.Post) error
+	GetAll() ([]models.Post, error)
 	GetById(*models.Post) error
 	Create(*models.Post) error
 	Update(*models.Post) error
@@ -23,8 +23,14 @@ func New_PostRepo(db *gorm.DB) Post_Repo {
 	return &post_Repo{db: db}
 }
 
-func (r *post_Repo) GetAll(posts []models.Post) error {
-	return r.db.Preload("Tags").Find(&posts).Error
+func (r *post_Repo) GetAll() ([]models.Post, error) {
+	postsDb := []models.Post{}
+	err := r.db.Preload("Tags").Find(&postsDb).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return postsDb, nil
 }
 
 func (r *post_Repo) GetById(post *models.Post) error {

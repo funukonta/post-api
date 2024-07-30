@@ -28,14 +28,18 @@ func New_PostHandler(serv services.Post_Service) Post_Handler {
 }
 
 func (h *post_Handler) GetAll(c *gin.Context) error {
-	var posts []models.Post
-	err := h.serv.GetAll(posts)
+
+	posts, err := h.serv.GetAll()
 	if err != nil {
 		fmt.Println(c.Request.Method, err)
 		return err
 	}
 
-	c.JSON(http.StatusOK, posts)
+	if len(posts) == 0 {
+		posts = make([]models.Post, 0)
+	}
+
+	pkg.Response(&pkg.Respon{Code: http.StatusOK, Message: "Berhasil get data all post", Data: posts}).Send(c)
 	return nil
 }
 

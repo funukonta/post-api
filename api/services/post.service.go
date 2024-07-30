@@ -6,7 +6,7 @@ import (
 )
 
 type Post_Service interface {
-	GetAll([]models.Post) error
+	GetAll() ([]models.Post, error)
 	GetById(*models.Post) (*models.PostRes, error)
 	Create(*models.PostReq) (*models.PostRes, error)
 	Update(int, *models.PostReq) error
@@ -21,8 +21,13 @@ func New_PostService(repo repos.Post_Repo) Post_Service {
 	return &post_Service{repo: repo}
 }
 
-func (s *post_Service) GetAll(posts []models.Post) error {
-	return s.repo.GetAll(posts)
+func (s *post_Service) GetAll() ([]models.Post, error) {
+	posts, err := s.repo.GetAll()
+	if err != nil {
+		return nil, err
+	}
+
+	return posts, err
 }
 
 func (s *post_Service) GetById(post *models.Post) (*models.PostRes, error) {
