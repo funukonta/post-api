@@ -32,4 +32,4 @@ func main() {
 	r.Run(port)
 }
 
-// docker run --name post-posgres -p 5432:5432 -e POSTGRES_PASSWORD=yourpassword -d postgres
+// docker run --name post-posgres -p 5432:5432 -e POSTGRES_PASSWORD=password123 -d postgres
